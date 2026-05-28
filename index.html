@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Datos Personales</title>
+    <style>
+        /* ── Reset & Base ── */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* ── Card ── */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .card h1 {
+            text-align: center;
+            color: #4a4a8a;
+            margin-bottom: 8px;
+            font-size: 1.8rem;
+        }
+
+        .card p.subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        /* ── Grid de campos ── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        label span.required {
+            color: #e74c3c;
+            margin-left: 2px;
+        }
+
+        input, select, textarea {
+            padding: 10px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #333;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            outline: none;
+            background: #fafafa;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.2);
+            background: #fff;
+        }
+
+        input.error, select.error {
+            border-color: #e74c3c;
+        }
+
+        textarea { resize: vertical; min-height: 80px; }
+
+        /* ── Botón ── */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: opacity 0.3s, transform 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit:hover  { opacity: 0.9; transform: translateY(-1px); }
+        .btn-submit:active { transform: translateY(0); }
+
+        /* ── Mensajes ── */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.error-msg {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .error-text {
+            color: #e74c3c;
+            font-size: 0.78rem;
+            margin-top: 4px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 520px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: 1; }
+            .card { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>📋 Datos Personales</h1>
+    <p class="subtitle">Complete el formulario con su información</p>
+
+    <!-- Mensajes de respuesta -->
+    <div class="alert success"  id="msgSuccess"></div>
+    <div class="alert error-msg" id="msgError"></div>
+
+    <form id="formPersona" novalidate>
+        <div class="form-grid">
+
+            <!-- Nombre -->
+            <div class="form-group">
+                <label for="nombre">Nombre <span class="required">*</span></label>
+                <input type="text" id="nombre" name="nombre"
+                       placeholder="Juan" maxlength="100">
+                <span class="error-text" id="err-nombre"></span>
+            </div>
+
+            <!-- Apellido -->
+            <div class="form-group">
+                <label for="apellido">Apellido <span class="required">*</span></label>
+                <input type="text" id="apellido" name="apellido"
+                       placeholder="Pérez" maxlength="100">
+                <span class="error-text" id="err-apellido"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Correo Electrónico <span class="required">*</span></label>
+                <input type="email" id="email" name="email"
+                       placeholder="juan@email.com" maxlength="150">
+                <span class="error-text" id="err-email"></span>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono"
+                       placeholder="+52 55 1234 5678" maxlength="20">
+            </div>
+
+            <!-- Fecha de nacimiento -->
+            <div class="form-group">
+                <label for="fecha_nac">Fecha de Nacimiento</label>
+                <input type="date" id="fecha_nac" name="fecha_nac">
+            </div>
+
+            <!-- Género -->
+            <div class="form-group">
+                <label for="genero">Género <span class="required">*</span></label>
+                <select id="genero" name="genero">
+                    <option value="">-- Seleccione --</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otro">Otro</option>
+                </select>
+                <span class="error-text" id="err-genero"></span>
+            </div>
+
+            <!-- Ciudad -->
+            <div class="form-group">
+                <label for="ciudad">Ciudad</label>
+                <input type="text" id="ciudad" name="ciudad"
+                       placeholder="Ciudad de México" maxlength="100">
+            </div>
+
+            <!-- País -->
+            <div class="form-group">
+                <label for="pais">País</label>
+                <input type="text" id="pais" name="pais"
+                       placeholder="México" maxlength="100">
+            </div>
+
+            <!-- Dirección -->
+            <div class="form-group full-width">
+                <label for="direccion">Dirección</label>
+                <textarea id="direccion" name="direccion"
+                          placeholder="Calle, número, colonia..."></textarea>
+            </div>
+
+        </div><!-- /form-grid -->
+
+        <button type="submit" class="btn-submit">💾 Guardar Registro</button>
+    </form>
+</div>
+
+<script>
+// ── Validación del formulario ──────────────────────────────────────────────
+const rules = {
+    nombre:   { required: true,  minLen: 2,  label: 'Nombre'  },
+    apellido: { required: true,  minLen: 2,  label: 'Apellido' },
+    email:    { required: true,  isEmail: true, label: 'Correo' },
+    genero:   { required: true,  label: 'Género' }
+};
+
+function validateField(name, value) {
+    const r = rules[name];
+    if (!r) return '';
+    if (r.required && !value.trim()) return `${r.label} es obligatorio.`;
+    if (r.minLen && value.trim().length < r.minLen)
+        return `${r.label} debe tener al menos ${r.minLen} caracteres.`;
+    if (r.isEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        return 'Ingrese un correo válido.';
+    return '';
+}
+
+function showError(field, msg) {
+    const el = document.getElementById('err-' + field);
+    const input = document.getElementById(field);
+    if (el) el.textContent = msg;
+    if (input) input.classList.toggle('error', !!msg);
+}
+
+// Validación en tiempo real
+Object.keys(rules).forEach(name => {
+    const el = document.getElementById(name);
+    if (el) el.addEventListener('blur', () => {
+        showError(name, validateField(name, el.value));
+    });
+});
+
+// ── Envío del formulario ───────────────────────────────────────────────────
+document.getElementById('formPersona').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    // Limpiar mensajes previos
+    ['nombre','apellido','email','genero'].forEach(f => showError(f, ''));
+    document.getElementById('msgSuccess').style.display = 'none';
+    document.getElementById('msgError').style.display   = 'none';
+
+    // Validar todos los campos
+    let valid = true;
+    Object.keys(rules).forEach(name => {
+        const el  = document.getElementById(name);
+        const msg = validateField(name, el ? el.value : '');
+        if (msg) { showError(name, msg); valid = false; }
+    });
+
+    if (!valid) return;
+
+    // Recopilar datos
+    const formData = new FormData(this);
+
+    // Enviar al servidor
+    try {
+        const btn = this.querySelector('.btn-submit');
+        btn.textContent = '⏳ Guardando...';
+        btn.disabled = true;
+
+        const response = await fetch('guardar.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            const ok = document.getElementById('msgSuccess');
+            ok.textContent = '✅ ' + result.message;
+            ok.style.display = 'block';
+            this.reset();
+        } else {
+            const err = document.getElementById('msgError');
+            err.textContent = '❌ ' + result.message;
+            err.style.display = 'block';
+        }
+    } catch (error) {
+        document.getElementById('msgError').textContent =
+            '❌ Error de conexión con el servidor.';
+        document.getElementById('msgError').style.display = 'block';
+    } finally {
+        const btn = this.querySelector('.btn-submit');
+        btn.textContent = '💾 Guardar Registro';
+        btn.disabled = false;
+    }
+});
+</script>
+
+</body>
+</html>
